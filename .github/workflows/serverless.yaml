@@ -1,0 +1,12 @@
+name: frontend workflow
+on:
+    push:
+        branches: 
+            - main
+jobs:
+    angular:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: print somethings
+              run: echo "deploying lambdas"
