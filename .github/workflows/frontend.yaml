@@ -5,6 +5,7 @@ on:
             - '.github/workflows/**'
         branches: 
             - main
+    workflow_dispatch:
 jobs:
     angular:
         runs-on: ubuntu-latest
