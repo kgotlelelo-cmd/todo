@@ -1,6 +1,8 @@
 name: frontend workflow
 on:
     push:
+        paths-ignore:
+            - '.github/workflows/**'
         branches: 
             - main
 jobs:
