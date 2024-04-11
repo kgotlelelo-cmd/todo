@@ -11,6 +11,7 @@ on:
       - '.github/workflows/**'
     branches:
       - aws-infra-servers
+  workflow_dispatch:
 
 jobs:
   terraform:
