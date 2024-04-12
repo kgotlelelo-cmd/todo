@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { getUserDetails, getUserTasks, updateUserDetails } from "../controllers/users";
+import { getUserDetails, getUserTasks, updateUserDetails, createUser } from "../controllers/users";
 
-const router = Router();
+export const userRouter = Router();
 
-
-router.get('/user/:email',getUserDetails);
-router.get('/user/task/:email',getUserTasks);
-router.put('/user/:id',updateUserDetails);
-router.delete('/user/:id');
+userRouter.post('/', createUser);
+userRouter.get('/:email', getUserDetails);
+userRouter.get('/task/:email', getUserTasks);
+userRouter.put('/:id', updateUserDetails);
+userRouter.delete('/:id');

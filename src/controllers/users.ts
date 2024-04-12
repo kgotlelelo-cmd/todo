@@ -1,10 +1,28 @@
-import { RequestHandler } from "express";
+import e, { RequestHandler } from "express";
 import { User } from "../models/user";
 
 interface UserBody {
     firstName: string,
     lastName: string,
     email: string
+}
+
+export const createUser: RequestHandler = async (req, res) => {
+    const { firstName, lastName, email }: User = req.body;
+
+    try {
+        const newUser: User = new User({
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+        });
+
+        newUser.save();
+        res.status(201);
+        res.json({ message: 'Successful' });
+    } catch (error) {
+        res.json({ message: 'Internal server Error' });
+    }
 }
 
 export const getUserDetails: RequestHandler = async (req, res) => {
