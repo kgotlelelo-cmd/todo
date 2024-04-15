@@ -4,6 +4,7 @@ import { sequelize } from "./clients/sequelize";
 import { userRouter } from './routes/users';
 import { taskRouter } from "./routes/tasks";
 import * as dotenv from 'dotenv';
+import { requestLoggerMiddleware } from "./middleware/requestLogger";
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const app = express();
 const port: number = parseInt(process.env.PORT as string);
 
 app.use(bodyParser.json());
+app.use(requestLoggerMiddleware);
 app.use('/user', userRouter);
 app.use('/task', taskRouter);
 

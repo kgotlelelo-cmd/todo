@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-
 import { Task } from "../models/task";
 import { User } from "../models/user";
 
