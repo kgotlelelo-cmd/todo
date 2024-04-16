@@ -34,10 +34,7 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_dns_support   = true
-}
-
-resource "aws_route_table" "route_table" {
-  vpc_id = module.vpc.vpc_id
+  map_public_ip_on_launch = true
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
