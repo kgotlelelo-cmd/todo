@@ -16,7 +16,7 @@ provider "aws" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.4.0"
+  version = "5.7.1"
 
   name = "Todo-VPC"
   cidr = "10.0.0.0/16"
@@ -34,6 +34,10 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_dns_support   = true
+}
+
+resource "aws_route_table" "route_table" {
+  vpc_id = module.vpc.vpc_id
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
@@ -69,6 +73,7 @@ resource "aws_security_group" "todo_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  vpc_id = module.vpc.vpc_id
 }
 
 data "aws_ami" "ubuntu" {
@@ -122,13 +127,18 @@ resource "aws_iam_policy" "cloudwatch_policy" {
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_policy_attachment" {
   policy_arn = aws_iam_policy.cloudwatch_policy.arn
+  role       = aws_iam_role.ec2_cloudwatch_role.name
+}
+
+resource "aws_iam_instance_profile" "ec2_cloudwatch_profiles" {
+  name = "ec2_cloudwatch_profiile"
   role = aws_iam_role.ec2_cloudwatch_role.name
 }
 
 resource "aws_instance" "todo_instance" {
-  ami             = data.aws_ami.ubuntu.id
-  instance_type   = "t3.micro"
-  subnet_id       = module.vpc.public_subnets[0]
-  security_groups = [aws_security_group.todo_sg.id]
-  iam_instance_profile = aws_iam_role.ec2_cloudwatch_role.name
+  ami                  = data.aws_ami.ubuntu.id
+  instance_type        = "t3.micro"
+  subnet_id            = module.vpc.public_subnets[0]
+  security_groups      = [aws_security_group.todo_sg.id]
+  iam_instance_profile = aws_iam_instance_profile.ec2_cloudwatch_profiles.name
 }
