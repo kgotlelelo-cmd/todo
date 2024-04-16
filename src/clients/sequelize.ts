@@ -1,6 +1,7 @@
 import { Sequelize } from  '@sequelize/core';
 import { User } from '../models/user';
 import { Task } from '../models/task';
+import { logger } from '../winstonLogger';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -13,5 +14,8 @@ const host = process.env.DB_HOST as string;
 export const sequelize = new Sequelize(name, username, password,{
     dialect: 'postgres',
     host: host,
-    models: [User,Task]
+    models: [User,Task],
+    logging: (message) => {
+        logger.info(message);
+    }
 });

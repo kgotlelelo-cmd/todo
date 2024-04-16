@@ -5,6 +5,7 @@ import { userRouter } from './routes/users';
 import { taskRouter } from "./routes/tasks";
 import * as dotenv from 'dotenv';
 import { requestLoggerMiddleware } from "./middleware/requestLogger";
+import { logger } from "./winstonLogger";
 
 dotenv.config();
 
@@ -20,11 +21,11 @@ app.use('/task', taskRouter);
 (async () => {
     try {
         await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
+        logger.info('Connection has been established successfully.');
         await sequelize.sync();
-        console.log('Models synced successfully.');
+        logger.info('Models synced successfully.');
     } catch (error) {
-        console.error('Error syncing or Failed to connect:', error);
+        logger.error(`Database could not initiate: ${JSON.stringify(error)}`);
     }
 })();
 
@@ -32,4 +33,4 @@ if (isNaN(port) || port < 0 || port > 65535) {
     throw new Error('Invalid port number in PORT environment variable.');
 }
 
-app.listen(port, () => console.log(`Server started at ${3000}`));
+app.listen(port, () => logger.info(`Server started at ${3000}`));
